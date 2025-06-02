@@ -1,7 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { FileScan, MoreHorizontal, VariableIcon } from "lucide-react"
+import { FileScan, FileX2, FilePen, MoreHorizontal, ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,9 +12,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { FileX2, FilePen, ArrowUpDown } from "lucide-react"
-import { on } from "events"
-
 export type User = {
     id: number
     name: string
@@ -21,6 +19,25 @@ export type User = {
 }
 
 export const columns: ColumnDef<User>[] = [
+    {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: "name",
         header: "Name",
