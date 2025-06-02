@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { FileScan, FileX2, FilePen, MoreHorizontal, ArrowUpDown } from "lucide-react"
+import { FileScan, FileX2, FilePen, MoreHorizontal, } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -11,6 +11,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
+import { DataTableColumnHeader } from "@/components/data-table-column-header"
 
 export type User = {
     id: number
@@ -40,19 +42,17 @@ export const columns: ColumnDef<User>[] = [
     },
     {
         accessorKey: "name",
-        header: "Name",
+        header: ({ column }) => {
+            return (
+                <DataTableColumnHeader column={column} title="Name" />
+            )
+        }
     },
     {
         accessorKey: "email",
         header: ({ column }) => {
             return (
-                <Button
-                    variant= "ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Email
-                    < ArrowUpDown className = "ml-2 h-4 w-4" />
-                </Button>
+                <DataTableColumnHeader column={column} title="Email" />
             )
         }
     },

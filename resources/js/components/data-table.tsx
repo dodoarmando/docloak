@@ -21,7 +21,7 @@ import {
     TableRow
 } from '@/components/ui/table';
 
-import { DataTablePagination } from './data-table-pagination';
+import { DataTablePagination } from '@/components/data-table-pagination';
 import { Input } from '@/components/ui/input';
 import {
     DropdownMenu,
