@@ -11,7 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { FileScanIcon, FileX2, FilePen } from "lucide-react"
+import { FileX2, FilePen } from "lucide-react"
 
 export type User = {
     id: number
@@ -44,7 +44,7 @@ export const columns: ColumnDef<User>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <FileScanIcon className="mr-2" /> View
+                            <FileScan className="mr-2" /> View
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                             <FilePen className="mr-2" /> Edit
