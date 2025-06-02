@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { FileScan, MoreHorizontal } from "lucide-react"
+import { FileScan, MoreHorizontal, VariableIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,7 +11,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { FileX2, FilePen } from "lucide-react"
+import { FileX2, FilePen, ArrowUpDown } from "lucide-react"
+import { on } from "events"
 
 export type User = {
     id: number
@@ -26,7 +27,17 @@ export const columns: ColumnDef<User>[] = [
     },
     {
         accessorKey: "email",
-        header: "Email",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant= "ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Email
+                    < ArrowUpDown className = "ml-2 h-4 w-4" />
+                </Button>
+            )
+        }
     },
     {
         id: "actions",
