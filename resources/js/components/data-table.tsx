@@ -12,6 +12,7 @@ import {
     useReactTable
 } from '@tanstack/react-table';
 
+import { Input } from '@/components/ui/input';
 import {
     Table,
     TableBody,
@@ -22,13 +23,8 @@ import {
 } from '@/components/ui/table';
 
 import { DataTablePagination } from '@/components/data-table-pagination';
-import { Input } from '@/components/ui/input';
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DataTableViewOptions } from '@/components/data-table-view-options';
+
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -65,6 +61,11 @@ export function DataTable<TData, TValue>({
 
     return (
         <div>
+            <div>
+                <h1 className="text-2xl font-bold tracking-tight">User Management</h1>
+                <p className="text-muted-foreground">Here’s a list of your users.</p>
+            </div>
+
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter emails..."
@@ -73,31 +74,9 @@ export function DataTable<TData, TValue>({
                     className="max-w-sm"
                 />
             
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <button className="ml-auto flex items-center space-x-2">
-                            <p className="text-muted-foreground">Columns</p>
-                        </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <DataTableViewOptions table={table} />
             </div>
+
             <div className='rounded-md border'>
                 <Table>
                     <TableHeader>

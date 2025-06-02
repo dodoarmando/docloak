@@ -17,7 +17,7 @@ export default function Index({users}: any) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="container mx-auto py-10">
+                <div className="container mx-auto">
                     <DataTable columns={columns} data={users} />
                 </div>
             </div>
