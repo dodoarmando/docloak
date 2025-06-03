@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 
 import { useForm, router } from '@inertiajs/react';
 import { UserPlus, Eye, EyeOff } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function CreateUserDialog() {
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -26,16 +27,24 @@ export function CreateUserDialog() {
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
+    const closeRef = React.useRef<HTMLButtonElement>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('users.store'), {
             onSuccess: () => {
+                toast.success(
+                    <>
+                        User <span className="font-bold">{data.name}</span> created successfully!
+                    </>
+                );
                 reset();
+                closeRef.current?.click();
                 router.reload({ only: ['users'] });
             },
         });
     };
+    
 
     return (
         <Dialog>
@@ -125,7 +134,7 @@ export function CreateUserDialog() {
 
                     <DialogFooter className="flex justify-end space-x-2 mt-4">
                         <DialogClose asChild>
-                            <Button variant="outline">
+                            <Button variant="outline" ref={closeRef}>
                                 Cancel
                             </Button>
                         </DialogClose>
