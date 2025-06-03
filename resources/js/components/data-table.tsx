@@ -29,11 +29,17 @@ import { DataTableViewOptions } from '@/components/data-table-view-options';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    title?: string;
+    description?: string;
+    toolbar?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    title = 'Table Title',
+    description = 'Table Description',
+    toolbar,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -62,19 +68,18 @@ export function DataTable<TData, TValue>({
     return (
         <div>
             <div>
-                <h1 className="text-2xl font-bold tracking-tight">User Management</h1>
-                <p className="text-muted-foreground">Here’s a list of your users.</p>
+                <h1 className="text-2xl font-bold tracking-tight">{ title }</h1>
+                <p className="text-muted-foreground">{ description }</p>
             </div>
-
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter emails..."
                     value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
                     onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
                     className="max-w-sm"
-                />
-            
+                />            
                 <DataTableViewOptions table={table} />
+                {toolbar}
             </div>
 
             <div className='rounded-md border'>
