@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { DataTableColumnHeader } from "@/components/data-table-column-header"
+import { DialogConfirmDelete } from "@/components/dialog-confirm-delete"
+import { router } from "@inertiajs/react"
+import { toast } from "sonner"
 
 export type User = {
     id: number
@@ -77,8 +80,21 @@ export const columns: ColumnDef<User>[] = [
                         <DropdownMenuItem>
                             <FilePen className="mr-2" /> Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <FileX2 className="mr-2" /> Delete
+                        <DropdownMenuItem asChild>
+                            <DialogConfirmDelete
+                                title={`Delete user "${user.name}"?`}
+                                description="This action cannot be undone. The user will be permanently removed."
+                                onConfirm={() => {
+                                    router.delete(route("users.destroy", user.id), {
+                                        onSuccess: () => toast.success(<span>User <b>{user.name}</b> deleted successfully.</span>),
+                                        onError: () => toast.error(<span>Failed to delete <b>{user.name}</b></span>),
+                                    })
+                                }}
+                            >
+                                <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-600">
+                                    <FileX2/> Delete
+                                </Button>
+                            </DialogConfirmDelete>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
