@@ -1,48 +1,70 @@
+import * as React from 'react';
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 interface DialogConfirmDeleteProps {
-    children: React.ReactNode;
-    title?: string;
-    description?: string;
+    title: string;
+    description: string;
     onConfirm: () => void;
-    loading?: boolean;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    trigger?: React.ReactNode;
+    children?: React.ReactNode;
 }
 
-export function DialogConfirmDelete({
-    children,
-    title = "Are you sure?",
-    description = "This action cannot be undone. This will permanently delete the item.",
-    onConfirm,
-    loading = false,
+export function DialogConfirmDelete({ 
+    title, 
+    description, 
+    onConfirm, 
+    open, 
+    onOpenChange, 
+    trigger,
+    children 
 }: DialogConfirmDeleteProps) {
+    const handleConfirm = () => {
+        onConfirm();
+        onOpenChange?.(false); // Close dialog after confirmation
+    };
+
     return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
-                {children}
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>{title}</AlertDialogTitle>
-                    <AlertDialogDescription>{description}</AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={onConfirm} disabled={loading}>
-                        {loading ? "Loading..." : "Confirm"}
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            {(trigger || children) && (
+                <DialogTrigger asChild>
+                    {trigger || children}
+                </DialogTrigger>
+            )}
+
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>{title}</DialogTitle>
+                    <DialogDescription>
+                        {description}
+                    </DialogDescription>
+                </DialogHeader>
+
+                <DialogFooter className="flex justify-end space-x-2 mt-4">
+                    <Button 
+                        variant="outline" 
+                        onClick={() => onOpenChange?.(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        variant="destructive" 
+                        onClick={handleConfirm}
+                    >
+                        Delete
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 }
